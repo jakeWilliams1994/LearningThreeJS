@@ -14,6 +14,8 @@
 			// Our Javascript will go here.
 			var scene = new THREE.Scene();
 			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+			var cubeXAcc = 0.01;
+			var cubeYAcc = 0.01;
 
 			var renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight );
@@ -23,12 +25,21 @@
 			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 			var cube = new THREE.Mesh( geometry, material );
 			scene.add( cube );
-		
+
+			camera.position.z = 5;
+			console.log(window.innerWidth);
+			
 			function render() {
 				requestAnimationFrame( render );
 				renderer.render( scene, camera );
 				cube.rotation.x += 0.01;
 				cube.rotation.y += 0.01;
+				cube.position.x += cubeXAcc;
+				cube.position.y += cubeYAcc;
+				if (cube.position.x > 3 || cube.position.x < -3)
+					cubeXAcc = 0 - cubeXAcc;
+				if (cube.position.y > 4 || cube.position.y < -4)
+					cubeYAcc = 0 - cubeYAcc;
 			}
 			render();
 		</script>
