@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<script src="js/three.js"></script>
+		<script src="js/jquery-3.2.1.js"></script>
+		<script src="js/Projector.js"></script>
+		<script src="js/CanvasRenderer.js"></script>
+		<script type="text/javascript">
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 0.1, 1000 );
+			var sphereXAcc = 0.01;
+			var sphereYAcc = 0.01;
+
+			var renderer = new THREE.CanvasRenderer();
+			renderer.setClearColor( 0xffffff );
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+			var loader = new THREE.TextureLoader();
+			var group = new THREE.Group();
+			scene.add(group);
+			loader.load(
+				'testImage.jpg',
+				function ( texture ) {
+					console.log("adding texture");
+					var geometry = new THREE.SphereGeometry(2,30,30);
+					var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
+					var sphere = new THREE.Mesh( geometry, material );
+					group.add( sphere );
+				},
+				function ( xhr ) { console.log("downloading"); },
+				function ( xhr ) { console.log( 'An error happened' ); }
+			);
+
+			camera.position.z = 7;
+			console.log(window.innerWidth);
+			
+			function render() {
+				requestAnimationFrame( render );
+				renderer.render( scene, camera );
+				group.rotation.x += 0.01;
+				group.rotation.y += 0.01;
+				group.position.x += sphereXAcc;
+				group.position.y += sphereYAcc;
+				if (group.position.x > 3 || group.position.x < -3)
+					sphereXAcc = 0 - sphereXAcc;
+				if (group.position.y > 4 || group.position.y < -4)
+					sphereYAcc = 0 - sphereYAcc;
+			}
+			
+			$(document).ready(function () {
+					console.log("rendering");
+					render();
+			});
+		</script>
+	</body>
+</html>
