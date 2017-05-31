@@ -14,7 +14,6 @@
 		<script>
 			var scene = new THREE.Scene();
 			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-			var group = new THREE.Group();
 
 			var renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight );
@@ -31,16 +30,36 @@
 				renderer.render( scene, camera );
 			}
 			
+			var particles = createParticlesArray(100);
+									
 			for (i = 0; i < 100; i++) {
-				var sphere = createBasicSphere(2,20,20);
-				sphere.position.x = Math.floor((Math.random() * 100) + 1);
-				sphere.position.y = Math.floor((Math.random() * 100) + 1);
-				sphere.position.z = Math.floor((Math.random() * 100) + 1);
-				group.add(sphere);
+				particles[i].particle.position.x = randomInt(1,100);
+				particles[i].particle.position.y = randomInt(1,100);
+				particles[i].particle.position.z = randomInt(1,100);
+				scene.add(particles[i].particle);
+			}
+				
+			function animate() {
+				for (i = 0; i < 100; i++) {
+					particles[i].particle.position.x += particles[i].xSpeed;
+					particles[i].particle.position.y += particles[i].ySpeed;
+					particles[i].particle.position.z += particles[i].zSpeed;
+					if (particles[i].particle.position.x >= 100 || particles[i].particle.position.x <= 0)
+						particles[i].xSpeed = 0 - particles[i].xSpeed;
+					if (particles[i].particle.position.y >= 100 || particles[i].particle.position.y <= 0)
+						particles[i].ySpeed = 0 - particles[i].ySpeed;
+					if (particles[i].particle.position.z >= 100 || particles[i].particle.position.z <= 0)
+						particles[i].zSpeed = 0 - particles[i].zSpeed;
+				}
 			}
 			
-			scene.add(group);
-					
+			
+			function render() {
+				animate();
+				requestAnimationFrame( render );
+				renderer.render( scene, camera );
+			}
+			
 			render();
 		</script>
 	</body>
