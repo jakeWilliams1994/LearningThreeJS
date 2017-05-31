@@ -20,10 +20,10 @@ function createBasicSphere(radius, widthSeg, HeightSeg) {
 }
 
 function createParticle() {
-	return {particle:createBasicSphere(1,1,1),
-			xSpeed:1,
-			ySpeed:1,
-			zSpeed:1};
+	return {particle:createBasicSphere(1,2,2),
+			xSpeed:randomInt(-2,4),
+			ySpeed:randomInt(-2,4),
+			zSpeed:randomInt(-2,4)};
 }
 
 function createParticlesArray(arraySize) {
