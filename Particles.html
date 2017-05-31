@@ -14,22 +14,33 @@
 		<script>
 			var scene = new THREE.Scene();
 			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+			var group = new THREE.Group();
 
 			var renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.body.appendChild( renderer.domElement );
-			drawAxis(10,scene);
+			drawAxis(100,100,100,scene);
 
-			camera.position.x = 10;
-			camera.position.y = 10;
-			camera.position.z = 10;
+			camera.position.x = 100;
+			camera.position.y = 100;
+			camera.position.z = 100;
 			camera.lookAt(new THREE.Vector3(0,0,0));
-			
+						
 			function render() {
 				requestAnimationFrame( render );
 				renderer.render( scene, camera );
 			}
 			
+			for (i = 0; i < 100; i++) {
+				var sphere = createBasicSphere(2,20,20);
+				sphere.position.x = Math.floor((Math.random() * 100) + 1);
+				sphere.position.y = Math.floor((Math.random() * 100) + 1);
+				sphere.position.z = Math.floor((Math.random() * 100) + 1);
+				group.add(sphere);
+			}
+			
+			scene.add(group);
+					
 			render();
 		</script>
 	</body>
